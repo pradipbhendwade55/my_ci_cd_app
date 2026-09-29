@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c5fbed03-9c6b-4dc8-ac8d-79099449558b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="my_ci_cd_appFlow" doc:id="af7b1bf2-1198-4e03-8f01-c3cec5bb64bb" >
+		<http:listener doc:name="Listener" doc:id="2911f669-bb21-43a0-8bae-922b2a77c2e9" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b70dbbf5-c325-458a-9fa0-548cac775fb2" message="$$$$$$===================Flow Started===================$$$$$$$"/>
+		<ee:transform doc:name="Transform Message" doc:id="23c09bd1-bfe2-4840-970a-498f0f1f8b76" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Mule First CI-CD Code Repo"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="6e1490a2-08aa-43e0-8e7f-9b06e286d5fc" message="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="abc1c4e5-ff97-43f8-884a-4d72644d7bc7" message="$$$$$$===================Flow Ended===================$$$$$$$"/>
+	</flow>
+</mule>
